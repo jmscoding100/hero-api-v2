@@ -3,6 +3,25 @@ const con = require('../../config/dbconfig')
 const speciesDao = {
     table: 'species',
 
+    findSpecies: (res,  table)=> {
+        con.execute(
+            `SELECT * FROM species;`,
+            (error, rows)=>{
+                if(!error){
+                    //do stuff
+                    if(rows.length === 1){
+                        res.json(...rows)
+                    } else{
+                        res.json(rows)
+                    }
+                } else {
+                    // do something eles
+                    console.log('DAO ERROR: ', error)
+                }
+            }
+        )
+    },
+
     findHeroesBySpecies: (res, table, species)=> {
         con.execute(
             `SELECT h.hero_id, h.hero_name, h.first_name,

@@ -22,7 +22,7 @@ const daoCommom = {
 
     findById : (res, table, id)=>{
         con.execute(
-            `SELECT * FROM ${table}, WHERE ${table}_id = ?;`,
+            `SELECT * FROM ${table} WHERE ${table}_id = ?;`,
             [id],
             (error, rows)=>{
                 if(!error){

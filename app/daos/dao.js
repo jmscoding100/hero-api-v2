@@ -30,7 +30,7 @@ const teamDao ={
 module.exports ={
     heroDao,
     powerDao,
-    speciesDao,
     franchiseDao,
-    teamDao
+    teamDao,
+    speciesDao
 }
