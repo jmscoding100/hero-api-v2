@@ -16,6 +16,68 @@ router.get('/api', (req, res) => {
     })
 })
 
+/**Forms */
+
+//heroForm
+router.get('/heroForm', (req, res)=>{
+    res.render('pages/heroForm', {
+        title: 'Hero Form',
+        name: 'Add a Hero',
+        endpoints
+    })
+})
+
+//powerForm
+router.get('/powerForm/:heroId', (req, res)=>{
+    const heroId = req.params.heroId
+
+    axios.get(`http://localhost:${PORT}/api/power`)
+        .then(resp =>{
+            res.render('pages/powerForm', {
+                title: 'Power Form',
+                name: 'Add Powers',
+                endpoints,
+                heroId,
+                powers: resp.data
+            })
+        })
+
+})
+
+//rivalForm
+router.get('/rivalForm/:heroId', (req, res)=>{
+    const heroId = req.params.heroId
+
+    axios.get(`http://localhost:${PORT}/api/hero`)
+        .then(resp =>{
+            res.render('pages/rivalForm', {
+                title: 'Rival Form',
+                name: 'Add Rivals',
+                endpoints,
+                heroId,
+                rivals: resp.data
+            })
+        })
+})
+
+//imageForm
+router.get('/hero-add-image/:hero/:heroId', (req, res)=>{
+    const hero = req.params.hero
+    const heroId = req.params.heroId
+
+    res.render('pages/imageForm', {
+        title: 'Image Form',
+        name: 'Add Image',
+        hero,
+        heroId,
+        endpoints
+    })
+})
+
+
+
+//**Pages */
+
 const endpoints = [
     'hero',
     'power',
@@ -115,11 +177,17 @@ const endpoint = endpoints[i]
                 })
         })
     }
+
+    //404 error => any path not listed above
+    // router.all('/{*any}', (req, res)=>{
+    //     // res.send('<h1>404 Error. This page does not exist.</h1>')
+    //     res.render('pages/404', {
+    //         title: '404',
+    //         name: '404',
+    //         endpoints
+    //     })
+    // })
 }
-
-
-
-
 
 
 

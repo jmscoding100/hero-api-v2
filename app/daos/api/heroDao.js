@@ -1,3 +1,5 @@
+const fs = require('fs')
+const path = require('path')
 const con = require('../../config/dbconfig')
 
 const heroDao = {
@@ -141,6 +143,96 @@ const heroDao = {
                 }
             }
         )
+    },
+
+    addPowers: (req, res, id)=>{
+
+        const data = req.body.power_id.map(item => {
+            return {"hero_id": id, "power_id": item }
+        })
+
+        data.forEach(obj => {
+            con.execute(
+                `INSERT INTO hero_to_power (hero_id, power_id)
+                VALUES (${obj.hero_id}, ${obj.power_id});`,
+                (error, dbres)=>{
+                    if(error){
+                        res.send(error)
+                    }
+                }
+            )
+        })
+
+        res.send('<h1>Posted</h1>')
+    },
+
+    addRivals: (req, res, id)=>{
+
+        const data = req.body.rival_id.map(item => {
+            return {"hero_id": id, "rival_id": item }
+        })
+
+        data.forEach(obj => {
+            con.execute(
+                `INSERT INTO hero_to_rival (hero_id, rival_id)
+                VALUES (${obj.hero_id}, ${obj.rival_id});`,
+                (error, dbres)=>{
+                    if(error){
+                        res.send(error)
+                    }
+                }
+            )
+        })
+
+        res.send('<h1>Posted</h1>')
+    },
+
+
+    update: (req, res, table)=>{
+        if(isNaN(req.params.id)){
+            res.json({
+                "error": true,
+                "message": "Id must be a number"
+            })
+        } else if (Object.keys(req.body).length === 0){
+            res.json({
+                "error": true,
+                "message": "No fields to update"
+            })
+        } else {
+
+            const fields = Object.keys(req.body)
+            const values = Object.values(req.body)
+
+            con.execute(
+                `UPDATE ${table}
+                    SET ${fields.join(' = ?, ')} = ? WHERE ${table}_id = ?;`,
+                    [...values, req.params.id],
+                    (error, dbres)=>{
+                        if(!error){
+                            res.send(`Changed ${dbres.changedRows} row(s)`)
+                        } else {
+                            console.log(`${table}Dao error:`, error)
+                            res.send('Error creating change')
+                        }
+                    }
+            )
+            const addFile = (dirPath, fileName, fileContent)=>{
+                const filePath = path.join(dirPath, fileName)
+
+                if(!fs.existsSync(dirPath)){
+                    fs.mkdirSync(dirPath, {recursive: true})
+                }
+
+                fs.writeFileSync(filePath, fileContent)
+                console(`File "${fileName} added to directory ${dirPath}`)
+                
+            }
+            const directoryPath = 'images'
+            const newFileName = values[0]
+
+            addFile(directoryPath, newFileName)
+        }
     }
 }
 

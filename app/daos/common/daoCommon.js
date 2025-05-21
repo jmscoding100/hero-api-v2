@@ -57,6 +57,34 @@ const daoCommom = {
                 }
             }
         )
+    }, 
+
+    create: (req, res, table)=>{
+
+        if(Object.keys(req.body).length === 0){
+            res.json({
+                "error": true,
+                "message": "No fields to create"
+            })
+        } else {
+
+            const fields = Object.keys(req.body)
+            const values = Object.values(req.body)
+
+            con.execute(
+                `INSERT INTO ${table} SET ${fields.join(' = ?, ')} = ?;`,
+                values,
+                (error, dbres)=>{
+                    if(!error){
+                        res.json({
+                            Last_id: dbres.insertId
+                        })
+                    } else {
+                        console.log(`${table}Dao error `, error)
+                    }
+                }
+            )
+        }
     }
 }
 

@@ -1,0 +1,22 @@
+<%- include('../partials/header') %>
+
+<main class="main" id="powerForm">
+    <div class="container">
+        <form action="http://localhost:3000/api/hero/power-post/<%= heroId %>" class="form" id="powerForm" method="post">
+            <div class="form-checks d-flex flex-wrap mb-5">
+                <% powers.forEach(power => {%>
+                    <div class="col">
+                        <div class="form-check my-3 mx-3">
+                            <input type="checkbox" class="form-check-input"  name="power_id[]" value="<%= power.power_id %>" id="power <%= power.power_id %>" />
+                            <label for="power<%= power.power_id%>" class="form-check-label"> <%= power.power %> </label>
+                        </div>
+                    </div>
+
+                <%})%>
+            </div>
+            <button type="submit" role="button" class="btn btn-primary">Add Powers</button>
+        </form>
+    </div>
+</main>
+
+<%- include('../partials/footer') %>

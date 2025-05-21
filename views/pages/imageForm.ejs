@@ -1,0 +1,18 @@
+<%- include('../partials/header') %>
+
+<main class="main" id="imageFormMain">
+    <div class="container">
+        <form action="http://localhost:3000/api/hero/image-update/<%= heroId %>" class="form" id="imageForm" method="post">
+            <div class="input-group mb-5">
+                <label for="imgUrl" class="form-label">
+                    add image
+                </label>
+                <input type="file" class="form-control" id="imgUrl" name="img_url" />
+            </div>
+            <button class="btn btn-primary" type="submit" role="button">add image</button>
+        </form>
+    </div>
+</main>
+
+
+<%- include('../partials/footer') %>
