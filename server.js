@@ -3,7 +3,7 @@ const server = express()
 const router =require('./app/routes/router')
 const helmet = require('helmet')
 const cors = require('cors')
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3005
 
 
 //Handle security
